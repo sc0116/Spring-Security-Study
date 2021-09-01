@@ -19,28 +19,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-
-        //사용자 계정은 user1
-        auth.inMemoryAuthentication().withUser("user1")
-                //1111 패스워드의 인코딩 결과
-                .password("$2a$10$SV7rRs8omHecvaCVMsDJcOQj7RwijKe782dm9xGd2vsQnbiGyTGOO")
-                .roles("USER");
-    }
-
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .authorizeRequests()
                 .antMatchers("/sample/all").permitAll()
-                .antMatchers("/sample/member").hasRole("USER")
-                .and()
-                .formLogin()
-                .and()
-                .logout()
-                .and()
-                .csrf()
-                .disable();
+                .antMatchers("/sample/member").hasRole("USER");
+
+        http.formLogin();
+        http.csrf().disable();
+        http.logout();
     }
 }
